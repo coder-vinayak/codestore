@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+
+bool isPrime(int num) {
+    if (num <= 1) return false;
+    for (int i = 2; i <= std::sqrt(num); ++i) {
+        if (num % i == 0) return false;
+    }
+    return true;
+}
+
+bool descending(int a, int b) {
+    return a > b;
+}
+
+std::vector<int> formatArray(std::vector<int> arr) {
+    std::vector<int> primes;
+    std::vector<int> nonPrimes;
+
+    for (int num : arr) {
+        if (isPrime(num)) {
+            primes.push_back(num);
+        } else {
+            nonPrimes.push_back(num);
+        }
+    }
+
+    std::sort(primes.begin(), primes.end(), descending);
+    std::sort(nonPrimes.begin(), nonPrimes.end(), descending);
+
+    std::vector<int> result;
+
+    if (!primes.empty()) {
+        result.push_back(primes[0]);
+    }
+
+    result.insert(result.end(), nonPrimes.begin(), nonPrimes.end());
+
+    if (primes.size() > 1) {
+        result.insert(result.end(), primes.begin() + 1, primes.end() - 1);
+        result.push_back(primes.back());
+    }
+
+    return result;
+}
+
+int main() {
+    std::vector<int> arr1 = {5, 1, 8, 11, 2};
+    std::vector<int> result1 = formatArray(arr1);
+
+    std::cout << "Output: ";
+    for (int num : result1) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+    std::vector<int> arr2 = {1, 6, 4, 13, 9, 3};
+    std::vector<int> result2 = formatArray(arr2);
+
+    std::cout << "Output: ";
+    for (int num : result2) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
